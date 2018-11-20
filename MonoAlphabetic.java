@@ -6,7 +6,7 @@ public class MonoAlphabetic {
 // constructor: create an encryption Array according to the give keyword
 	public MonoAlphabetic(String keyword){
 		setUpKeyword(keyword);
-		keywordRepeatCheck();
+		keywordCheck();
 		encryptionArrayGenerate();
 	}
 // I think a keyword set up method should be private, 
@@ -28,8 +28,13 @@ public class MonoAlphabetic {
     	return keywordArray;
     }
     
-    public void keywordRepeatCheck() {
+    public void keywordCheck() {
     	for(int i=0;i<keywordArray.length;i++) {
+    		if(keywordArray[i]<65||keywordArray[i]>90) {
+				System.out.println("warning!must be alphabetic characters");
+				while(true) {
+				}
+    		}
     		for(int j=i+1;j<keywordArray.length;j++) {
     			if(keywordArray[i]==keywordArray[j]) {
     				System.out.println("No repeated alphabet in keyword, start the program again");
@@ -39,7 +44,7 @@ public class MonoAlphabetic {
     		}
     	}
     }
-    
+     
     public char[] encryptionArrayGenerate() {   	
     	int position = 0;
 		int number = 65;   		

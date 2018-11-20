@@ -42,13 +42,7 @@ public class LetterFrequencies {
 			}			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		  } finally{
-			  try {
-				  readFile.close();
-			  } catch (IOException e) {
-				  e.printStackTrace();
-			    }
-		    }	
+		  } 
 		return Alphabet;		
 	}
 	public int sumOfFrequency(int[] Alphabet) {
@@ -83,7 +77,7 @@ public class LetterFrequencies {
 		String freq,Diff;
 		for(int i=0;i<26;i++) {
 			freq = String.format("%.1f",(Alphabet[i]/sum)*100);
-			Diff = String.format("%1f",(Alphabet[i]/sum-avgCounts[i]));
+			Diff = String.format("%.1f",(Alphabet[i]/sum-avgCounts[i]));
 			content+= Character.toString((char)(i+65))+"       "
 		           + Alphabet[i]+"    "
 		           + freq+"%    "

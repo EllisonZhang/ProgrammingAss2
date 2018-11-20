@@ -42,13 +42,14 @@ public class FileHandling {
 				content+="\r\n";
 			}			
 		} catch (FileNotFoundException e) {
-			
+			System.out.println("wrong address!! file not found.");
 //			e.printStackTrace();
 		} finally{
 			try {
 				readFile.close();
 			} catch (IOException e) {
 //				e.printStackTrace();
+				
 			}
 		}	
 		return content;
@@ -77,7 +78,6 @@ public class FileHandling {
 				readFile.close();
 			} catch (IOException e) {
 //				e.printStackTrace();
-				System.out.println("wrong address!! file not found.");
 			}
 		}	
 		return content;		
