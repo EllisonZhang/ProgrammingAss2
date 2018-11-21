@@ -1,59 +1,23 @@
+/*this class can encode/decode a single alphabet 
+  based on a give KeyWord object*/
+
 public class MonoAlphabetic {
-	
 	private char[] encryptionArray = new char[26];
-	private String keyword;
-	char[] keywordArray = null;
+	protected char[] keywordArray;
+	protected int position = 0;
+	
 // constructor: create an encryption Array according to the give keyword
-	public MonoAlphabetic(String keyword){
-		setUpKeyword(keyword);
-		keywordCheck();
+	public MonoAlphabetic(KeyWord keyWord){
+		keywordArray = keyWord.GetKeywordArray();
 		encryptionArrayGenerate();
 	}
-// I think a keyword set up method should be private, 
-// in case someone changed it from outside. keyword can't be changed!!!
-// but must be an alphabet  and no repeat 
-    private void setUpKeyword(String keyword) {
-        //    	repeat and legal check??????????
-    	this.keyword = keyword;
-    	keywordArray = keywordFormating();
-    }	
-// user can put keyword in either upper or lower case,
-    public char[] keywordFormating() {
-    	char[] keywordArray = keyword.toCharArray();  
-    	for(int i=0;i<keywordArray.length;i++) {
-    		if(keywordArray[i]>96&&keywordArray[i]<123) {
-    			keywordArray[i] = (char) (keywordArray[i]-32);		
-    		}
-   	    }
-    	return keywordArray;
-    }
-    
-    public void keywordCheck() {
-    	for(int i=0;i<keywordArray.length;i++) {
-    		if(keywordArray[i]<65||keywordArray[i]>90) {
-				System.out.println("warning!must be alphabetic characters");
-				while(true) {
-				}
-    		}
-    		for(int j=i+1;j<keywordArray.length;j++) {
-    			if(keywordArray[i]==keywordArray[j]) {
-    				System.out.println("No repeated alphabet in keyword, start the program again");
-    				while(true) {
-    				}
-    			}
-    		}
-    	}
-    }
-     
+//Generate an encryption table
     public char[] encryptionArrayGenerate() {   	
-    	int position = 0;
 		int number = 65;   		
-        // The initial positions are occupied by the keyword
-    	for(position=0;position<keywordArray.length;position++) {
+    	for(position=0;position<keywordArray.length;position++) {  //put keyword in front.
             encryptionArray[position] = keywordArray[position];
-    	}    	
-        //the remaining positions are occupied by any characters not in the keyword
-    	for(;position<encryptionArray.length;position++){	
+    	}    	       
+    	for(;position<encryptionArray.length;position++){	       //the remaining positions       
     		 int i = 0;
     		 while(true) {    			 
     			 if(number==keywordArray[i]) {
@@ -71,15 +35,15 @@ public class MonoAlphabetic {
         }
     	return encryptionArray;
     }
- // assume content is already a upper case
+// encode an alphabet and return
     public char encode(char content) {
-    	char encodedContent='a';
+    	char encodedContent;
         encodedContent = encryptionArray[content-65];
     	return encodedContent;
     }
- // assume content is already a upper case
+// decode an alphabet and return
     public char decode(char content) {
-    	char decodedContent='a';
+    	char decodedContent;
     	int j=0;
     	for(int i=0;i<encryptionArray.length;i++) {
     		if (content == encryptionArray[i]) {

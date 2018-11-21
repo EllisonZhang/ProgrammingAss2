@@ -4,103 +4,90 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-//  function : encode/decode a file (give a filePath) using a given cipher (Vignere/MonoAlphabetic)
+/*  this class do everything related to files such as getting the 
+    file content, writing a file and encoding/decoding a file.
+    We don't need to repeat the things like try, catch, fileWriter, 
+    fileReader and so on.    */
 public class FileHandling {
-	private String filePath = null;
-	private FileReader readFile = null;
-	private Scanner s = null;
-	private MonoAlphabetic cipher = null;
-	private String content ="";
-//	tell the FileHandling where is the file and use what cipher
+	private String filePath;
+	private FileReader readFile;
+	private Scanner s;
+	private MonoAlphabetic cipher;
+	private String content= "";
+
+//Constructor1:	tell the FileHandling where is the file and use what cipher
 	public FileHandling(String filePath,MonoAlphabetic cipher) {
 		setFilePath(filePath);
 		setCipher(cipher);
 	}
+//Constructor2:	tell the FileHandling where is the file 
+	public FileHandling(String filePath) {
+		setFilePath(filePath);
+	}
+	
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-	public void setCipher(Vignere cipher) {
+	public void setCipher(MonoAlphabetic cipher) {
 		this.cipher = cipher;
-	}public void setCipher(MonoAlphabetic cipher) {
-		this.cipher = cipher;
-	}
-	
-	public String encodeFile () {
-		String encodeContent = "";
+	}	
+	public String getFileContent () {
 		try {
 			readFile= new FileReader(filePath);
 			s = new Scanner (readFile);
-			while(s.hasNextLine()) {                          // read line by line
-				encodeContent = s.nextLine();
-				char[] tokens = encodeContent.toCharArray();        // store content in char array
+			while(s.hasNextLine()) {
+				content+= s.nextLine()+"\r\n";
+			  }      
+			}catch (FileNotFoundException e) {
+				System.out.println("wrong address!! file not found.");
+			} finally{
+				try {
+					readFile.close();
+				} catch (IOException e) {
+					
+			    }		
+			}			
+		return content;
+	}
+/*	encode all the content in this file and return the encoded content*/
+	public String encodeFile () {
+		getFileContent();
+		String encodedContent ="";
+				char[] tokens = content.toCharArray();        // store content in char array
 				for(int i=0; i<tokens.length;i++) {
 					if(tokens[i]>64&&tokens[i]<91) {
 						tokens[i] = cipher.encode(tokens[i]); //if it is upper letter, encode it
 					}
-					content+=tokens[i];
+					encodedContent+= tokens[i];
 				}
-				content+="\r\n";
-			}			
-		} catch (FileNotFoundException e) {
-			System.out.println("wrong address!! file not found.");
-//			e.printStackTrace();
-		} finally{
-			try {
-				readFile.close();
-			} catch (IOException e) {
-//				e.printStackTrace();
-				
-			}
-		}	
-		return content;
+
+		return encodedContent;
 	}
+	
+/*	decode all the content in this file and return the decoded content*/
 	public String decodeFile () {
-		String decodeContent = "";
-		try {
-			readFile= new FileReader(filePath);
-			s = new Scanner (readFile);
-			while(s.hasNextLine()) {                          // read line by line
-				decodeContent = s.nextLine();
-				char[] tokens = decodeContent.toCharArray();        // store content in char array
+		getFileContent();
+		String decodedContent = "";
+				char[] tokens = content.toCharArray();        // store content in char array
 				for(int i=0; i<tokens.length;i++) {
 					if(tokens[i]>64&&tokens[i]<91) {
 						tokens[i] = cipher.decode(tokens[i]); //if it is upper letter, encode it
 					}
-					content+=tokens[i];
+					decodedContent+=tokens[i];
 				}
-				content+="\r\n";
-			}			
-		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
+	
+		return decodedContent;		
+	}
+
+	public void writeAnyFile(String fileName,String content) {
+		FileWriter fw;
+		try {
+			fw = new FileWriter(fileName);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(content);
+			bw.close();
+		} catch (IOException e) {		
 			System.out.println("wrong address!! file not found.");
-		} finally{
-			try {
-				readFile.close();
-			} catch (IOException e) {
-//				e.printStackTrace();
-			}
-		}	
-		return content;		
-	}
-	public void writeFile(String fileName) {
-		FileWriter fw;
-		try {
-			fw = new FileWriter(fileName);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(content);
-			bw.close();
-		} catch (IOException e) {	
-			System.out.println("wrong address!! file not found.1");
-		}		
-	}
-	static void writeAnyFile(String fileName,String content) {
-		FileWriter fw;
-		try {
-			fw = new FileWriter(fileName);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(content);
-			bw.close();
-		} catch (IOException e) {			
 		}		
 	}	
 }
